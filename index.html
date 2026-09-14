@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DrawPad</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,11 +12,32 @@
   <!-- ÉCRAN D'ACCUEIL -->
   <div id="homeScreen">
     <h1 class="rainbow-title">DrawPad</h1>
+
+    <!-- RECTANGLE RAINBOW AVEC ANNONCE EN NOIR -->
+    <div class="rainbow-announcement-box">
+      <p>
+        <span data-i18n="announcement">
+          Annonce importante : je fait un concour de dessin et le gagnant gagnera 10€ de robux soit 1.000 robux, le concours commencera le 31 Septembre 2026 à 18h00 et se finira le 31 octobre 2026 à 18h00 soit durera 1 mois tout pile, envoyez pendant le conxours dans le salon #dessin de mon serveur discord vos dessin en capture d’écran : aucune option d’IA autorisée et le dessin doit être fait sur mon site, donc celui là ! Bonne chance bande de bg !
+        </span>
+        <svg class="wink-icon" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9 9h.01"></path>
+          <path d="M15 9l-2 1 2 1"></path>
+          <path d="M8 15s1.5 2 4 2 4-2 4-2"></path>
+        </svg>
+      </p>
+    </div>
+
+    <!-- LIEN DISCORD CLIQUABLE -->
+    <a href="https://discord.gg/x3rB5nwKun" target="_blank" rel="noopener noreferrer" class="discord-link" data-i18n="discordBtn">
+      <i class="fa-brands fa-discord"></i> serveur d’Elyesrloi
+    </a>
+
     <p id="countdownDisplay">: Chargement...</p>
 
     <div class="home-buttons">
-      <button id="startBtn" class="primary-btn"><i class="fa-solid fa-play"></i> Commencer à dessiner</button>
-      <button id="openGalleryBtn" class="secondary-btn"><i class="fa-solid fa-folder-open"></i> Mes dessins enregistrés</button>
+      <button id="startBtn" class="primary-btn" data-i18n="startBtn"><i class="fa-solid fa-play"></i> Commencer à dessiner</button>
+      <button id="openGalleryBtn" class="secondary-btn" data-i18n="galleryBtn"><i class="fa-solid fa-folder-open"></i> Mes dessins enregistrés</button>
     </div>
   </div>
 
@@ -67,7 +88,7 @@
   <div id="colorPickerModal" class="modal">
     <div class="modal-content color-picker-content">
       <span id="closePickerBtn" class="close-btn">&times;</span>
-      <h3>Couleur & Épaisseur</h3>
+      <h3 data-i18n="colorModalTitle">Couleur & Épaisseur</h3>
 
       <div class="picker-layout">
         <div id="satValContainer">
@@ -80,7 +101,7 @@
         </div>
 
         <div id="sizeSliderContainer">
-          <input type="range" id="pickerSizeInput" min="1" max="100" value="5" orient="vertical">
+          <input type="range" id="pickerSizeInput" min="1" max="100" value="5">
           <div id="sizeHandle"></div>
         </div>
       </div>
@@ -97,7 +118,7 @@
       </div>
 
       <div class="current-color-preview">
-        <span>Sélectionnée :</span>
+        <span data-i18n="selectedColor">Sélectionnée :</span>
         <div id="currentColorDot"></div>
       </div>
     </div>
@@ -107,7 +128,7 @@
   <div id="galleryModal" class="modal">
     <div class="modal-content">
       <span id="closeGalleryBtn" class="close-btn">&times;</span>
-      <h2>Mes dessins enregistrés</h2>
+      <h2 data-i18n="galleryTitle">Mes dessins enregistrés</h2>
       <div id="galleryGrid"></div>
     </div>
   </div>
