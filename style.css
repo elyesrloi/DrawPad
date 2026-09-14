@@ -1,9 +1,13 @@
+/* ---------------------------------------------------
+   1. REZET ET BASES
+--------------------------------------------------- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  touch-action: manipulation;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 body, html {
@@ -11,280 +15,278 @@ body, html {
   height: 100%;
   overflow: hidden;
   background-color: #1a1a1a;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #ffffff;
 }
 
-/* --- ÉCRAN D'ACCUEIL --- */
+/* ---------------------------------------------------
+   2. ÉCRAN D'ACCUEIL
+--------------------------------------------------- */
 #homeScreen {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #1a1a1a;
-  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
   padding: 20px;
+  z-index: 1000;
   overflow-y: auto;
 }
 
-/* Titre Arc-en-ciel */
+/* Titre principal */
 .rainbow-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-align: center;
-  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9b00e8);
-  background-size: 200% auto;
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: rainbowText 3s linear infinite;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-/* Rectangle Rainbow d'Annonce */
+/* Encadré d'annonce Arc-en-ciel */
 .rainbow-announcement-box {
-  width: 100%;
-  max-width: 360px;
-  padding: 14px 18px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);
   background-size: 300% 300%;
-  animation: rainbowGlow 6s ease infinite;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  animation: rainbowAnimation 6s ease infinite;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 10px auto 20px auto;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .rainbow-announcement-box p {
   color: #000000;
-  font-weight: bold;
-  font-size: 0.88rem;
-  line-height: 1.35;
-  text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.wink-icon {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Lien Discord sous le rectangle */
-.discord-link {
-  color: #5865F2;
-  text-decoration: underline;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  word-break: break-all;
-  transition: opacity 0.2s ease;
+  line-height: 1.4;
+  margin: 0;
+  text-align: center;
+  word-wrap: break-word;
 }
 
-.discord-link:hover, .discord-link:active {
-  opacity: 0.8;
-  color: #7983f5;
+/* Taille fixe forcée pour l'icône SVG wink */
+.wink-icon {
+  width: 22px !important;
+  height: 22px !important;
+  max-width: 22px;
+  max-height: 22px;
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 5px;
+  stroke: #000000;
 }
 
-@keyframes rainbowText {
-  0% { background-position: 0% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes rainbowGlow {
+@keyframes rainbowAnimation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-#countdownDisplay {
-  font-size: 1.1rem;
-  color: #ffcc00;
+/* Lien Discord */
+.discord-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #5865F2;
+  text-decoration: none;
   font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  transition: transform 0.2s;
 }
 
+.discord-link:hover {
+  transform: scale(1.05);
+}
+
+/* Compte à rebours */
+#countdownDisplay {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffcc00;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Boutons d'accueil */
 .home-buttons {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
   width: 100%;
   max-width: 320px;
 }
 
 .primary-btn, .secondary-btn {
-  padding: 12px 20px;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: 14px 20px;
   border: none;
   border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  transition: opacity 0.2s, transform 0.1s;
 }
 
-.primary-btn { background-color: #0084ff; color: #fff; }
-.secondary-btn { background-color: #333333; color: #fff; border: 1px solid #555; }
+.primary-btn {
+  background-color: #2ed573;
+  color: #ffffff;
+}
 
-/* --- INTERFACE DE DESSIN --- */
+.secondary-btn {
+  background-color: #3a3b3c;
+  color: #ffffff;
+}
+
+.primary-btn:active, .secondary-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---------------------------------------------------
+   3. INTERFACE DE DESSIN
+--------------------------------------------------- */
 #appContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #2b2b2b;
-}
-
-#canvasContainer {
-  width: 100%;
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
-  touch-action: none;
-}
-
-/* FIX SAMSUNG BROWSER / MOBILE BARRES */
-#topBar, #bottomBar {
-  position: fixed;
-  z-index: 1000;
+  width: 100%;
+  height: 100%;
   display: flex;
-  gap: 6px;
-  background: rgba(25, 25, 25, 0.92);
-  padding: 8px 10px;
-  border-radius: 30px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  max-width: 96vw;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  flex-direction: column;
 }
 
-#topBar::-webkit-scrollbar, #bottomBar::-webkit-scrollbar {
-  display: none;
+/* Barre d'outils haute & basse */
+#topBar, #bottomBar {
+  background-color: #242526;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px;
+  z-index: 10;
 }
 
 #topBar {
-  top: calc(10px + env(safe-area-inset-top));
-  left: 50%;
-  transform: translateX(-50%);
+  border-bottom: 1px solid #3a3b3c;
 }
 
 #bottomBar {
-  bottom: calc(16px + env(safe-area-inset-bottom));
-  left: 50%;
-  transform: translateX(-50%);
+  border-top: 1px solid #3a3b3c;
 }
 
-#topBar button, #bottomBar button, .color-indicator {
-  min-width: 38px;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
+/* Boutons d'outils */
+button {
+  background: transparent;
   border: none;
-  background: #3a3a3a;
-  color: #ffffff;
-  font-size: 0.95rem;
+  color: #e4e6eb;
+  font-size: 1.2rem;
+  padding: 10px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  position: relative;
 }
 
-#bottomBar button.active {
-  background: #0084ff;
+button.active, button:hover {
+  background-color: #3a3b3c;
+  color: #2ed573;
 }
 
-/* BOUTON IA DÉSACTIVÉ */
-#geminiAiBtn.disabled, #geminiAiBtn:disabled {
-  opacity: 0.3 !important;
-  cursor: not-allowed !important;
-  pointer-events: none !important;
-  filter: grayscale(100%);
+button.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
-#geminiAiBtn.disabled::after {
-  content: "";
-  position: absolute;
-  width: 26px;
-  height: 3px;
-  background-color: #ff0000;
-  transform: rotate(-45deg);
-}
-
+/* Indicateur de couleur */
 .color-indicator {
-  padding: 3px;
-  background: #3a3a3a;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  padding: 2px;
+  cursor: pointer;
 }
 
-#topColorDot {
+#topColorDot, #currentColorDot {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   background-color: #000000;
-  border: 1px solid #fff;
 }
 
-/* APERÇU MINIATURE */
+/* Zone du Canvas */
+#canvasContainer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: #18191a;
+  touch-action: none;
+}
+
+/* Aperçu miniature */
 #previewContainer {
-  position: fixed;
-  bottom: calc(16px + env(safe-area-inset-bottom));
-  right: 10px;
-  z-index: 900;
-  border: 2px solid #555;
+  position: absolute;
+  bottom: 70px;
+  right: 15px;
+  border: 2px solid #3a3b3c;
   border-radius: 6px;
   overflow: hidden;
-  background: #000;
+  background: #ffffff;
+  pointer-events: none;
+  z-index: 5;
 }
 
 #previewCanvas {
   display: block;
 }
 
-/* MODALES */
+/* ---------------------------------------------------
+   4. MODALES (SÉLECTEUR DE COULEURS ET GALERIE)
+--------------------------------------------------- */
 .modal {
   display: none;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.8);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 2000;
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background: #222;
-  padding: 20px;
+  background-color: #242526;
   border-radius: 12px;
+  padding: 20px;
   width: 90%;
   max-width: 400px;
   position: relative;
+  color: #ffffff;
 }
 
 .close-btn {
   position: absolute;
   top: 10px;
   right: 15px;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   cursor: pointer;
+  color: #aaa;
 }
 
+/* Structure du Sélecteur de couleur */
 .picker-layout {
   display: flex;
   gap: 10px;
@@ -305,84 +307,76 @@ body, html {
 }
 
 #pickerCursor {
+  position: absolute;
   width: 12px;
   height: 12px;
   border: 2px solid #fff;
   border-radius: 50%;
-  position: absolute;
   transform: translate(-50%, -50%);
   pointer-events: none;
+  box-shadow: 0 0 3px rgba(0,0,0,0.8);
 }
 
 #hueContainer {
   width: 25px;
-  height: 100%;
-  background: linear-gradient(to bottom, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-  border-radius: 6px;
   position: relative;
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
 }
 
 #hueHandle {
-  width: 100%;
-  height: 4px;
-  background: #fff;
   position: absolute;
-  left: 0;
-  box-shadow: 0 0 2px #000;
+  width: 100%;
+  height: 6px;
+  background: #ffffff;
+  border: 1px solid #000;
+  border-radius: 2px;
+  transform: translateY(-50%);
 }
 
 #sizeSliderContainer {
-  width: 25px;
-  height: 100%;
+  width: 30px;
   position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 #pickerSizeInput {
-  width: 100%;
+  writing-mode: bt-lr;
+  -webkit-appearance: slider-vertical;
+  width: 10px;
   height: 100%;
-  opacity: 0;
-}
-
-#sizeHandle {
-  width: 100%;
-  height: 6px;
-  background: #0084ff;
-  position: absolute;
-  pointer-events: none;
-  border-radius: 3px;
 }
 
 .preset-colors {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
   margin-bottom: 15px;
 }
 
 .preset-btn {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 1px solid #555;
-  cursor: pointer;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  border: 1px solid #4e4f50;
+  padding: 0;
 }
 
 .current-color-preview {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: center;
+  font-weight: bold;
 }
 
-#currentColorDot {
+.current-color-preview .color-indicator {
   width: 24px;
   height: 24px;
-  border-radius: 50%;
-  border: 1px solid #fff;
 }
 
+/* Galerie */
 #galleryGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -393,25 +387,25 @@ body, html {
 }
 
 .drawing-card {
-  border: 1px solid #444;
+  background-color: #3a3b3c;
   border-radius: 6px;
-  overflow: hidden;
-  background: #111;
+  padding: 5px;
   display: flex;
   flex-direction: column;
+  gap: 5px;
 }
 
 .drawing-card img {
   width: 100%;
-  height: 100px;
-  object-fit: cover;
+  height: auto;
+  border-radius: 4px;
+  background: #ffffff;
 }
 
 .delete-drawing-btn {
-  background: #ff3333;
-  color: white;
-  border: none;
-  padding: 5px;
-  font-size: 0.7rem;
-  cursor: pointer;
+  background-color: #ff4757;
+  color: #ffffff;
+  font-size: 0.75rem;
+  padding: 4px;
+  border-radius: 4px;
 }
