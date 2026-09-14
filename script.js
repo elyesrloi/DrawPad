@@ -1,16 +1,92 @@
-/* ===================================================
-   DrawPad - Script Principal (script.js)
-   =================================================== */
+// ---------------------------------------------------
+// SISTÈME DE TRADUCTION DE LA LANGUE SYSTEME
+// ---------------------------------------------------
+const translations = {
+  fr: {
+    announcement: "Annonce importante : je fait un concour de dessin et le gagnant gagnera 10€ de robux soit 1.000 robux, le concours commencera le 31 Septembre 2026 à 18h00 et se finira le 31 octobre 2026 à 18h00 soit durera 1 mois tout pile, envoyez pendant le conxours dans le salon #dessin de mon serveur discord vos dessin en capture d’écran : aucune option d’IA autorisée et le dessin doit être fait sur mon site, donc celui là ! Bonne chance bande de bg !",
+    discordBtn: "serveur d’Elyesrloi",
+    startBtn: "Commencer à dessiner",
+    galleryBtn: "Mes dessins enregistrés",
+    colorModalTitle: "Couleur & Épaisseur",
+    selectedColor: "Sélectionnée :",
+    galleryTitle: "Mes dessins enregistrés",
+    loading: "Chargement...",
+    contestInProg: "Concours en cours ! 🔥",
+    contestEnded: "Concours terminé ! 🎉",
+    noDrawings: "Aucun dessin enregistré pour le moment.",
+    deleteBtn: "Supprimer",
+    confirmClear: "Voulez-vous vraiment effacer tout le dessin ?",
+    saveSuccess: "Dessin enregistré dans 'Mes dessins enregistrés' !",
+    aiDisabledTooltip: "L'option IA est interdite pendant toute la durée du concours !",
+    textPrompt: "Entrez votre texte :"
+  },
+  en: {
+    announcement: "Important announcement: I'm hosting a drawing contest and the winner will get 10€ worth of Robux (1,000 Robux). The contest runs from Sept 30, 2026 to Oct 30, 2026. Send your drawings in the #dessin channel on Discord. No AI allowed, drawing must be made on this site! Good luck!",
+    discordBtn: "Elyesrloi's server",
+    startBtn: "Start drawing",
+    galleryBtn: "My saved drawings",
+    colorModalTitle: "Color & Size",
+    selectedColor: "Selected:",
+    galleryTitle: "My saved drawings",
+    loading: "Loading...",
+    contestInProg: "Contest in progress! 🔥",
+    contestEnded: "Contest ended! 🎉",
+    noDrawings: "No saved drawings yet.",
+    deleteBtn: "Delete",
+    confirmClear: "Are you sure you want to clear the canvas?",
+    saveSuccess: "Drawing saved to 'My saved drawings'!",
+    aiDisabledTooltip: "AI option is forbidden during the contest!",
+    textPrompt: "Enter your text:"
+  },
+  es: {
+    announcement: "Anuncio importante: ¡Concurso de dibujo! El ganador obtendrá 10€ en Robux (1.000 Robux). Del 30 de sep de 2026 al 30 de oct de 2026. Envía tu dibujo al canal #dessin en Discord. ¡Sin IA, hecho en este sitio! ¡Buena suerte!",
+    discordBtn: "Servidor de Elyesrloi",
+    startBtn: "Empezar a dibujar",
+    galleryBtn: "Mis dibujos guardados",
+    colorModalTitle: "Color y Grosor",
+    selectedColor: "Seleccionado:",
+    galleryTitle: "Mis dibujos guardados",
+    loading: "Cargando...",
+    contestInProg: "¡Concurso en curso! 🔥",
+    contestEnded: "¡Concurso finalizado! 🎉",
+    noDrawings: "Aún no hay dibujos guardados.",
+    deleteBtn: "Eliminar",
+    confirmClear: "¿De verdad quieres borrar todo el dibujo?",
+    saveSuccess: "¡Dibujo guardado en 'Mis dibujos guardados'!",
+    aiDisabledTooltip: "¡La opción IA está prohibida durante el concurso!",
+    textPrompt: "Introduce tu texto:"
+  }
+};
+
+const userLang = (navigator.language || navigator.userLanguage).slice(0, 2);
+const lang = translations[userLang] ? userLang : 'fr';
+const t = translations[lang];
+
+function applyTranslations() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (t[key]) {
+      const icon = el.querySelector("i, svg");
+      if (icon) {
+        el.textContent = " " + t[key];
+        el.prepend(icon);
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyTranslations();
+
   // ---------------------------------------------------
-  // 1. COMPTE À REBOURS DU CONCOURS (DATE RÉELLE)
+  // 1. COMPTE À REBOURS DU CONCOURS
   // ---------------------------------------------------
   const geminiAiBtn = document.getElementById("geminiAiBtn");
   const geminiFileInput = document.getElementById("geminiFileInput");
 
   function updateCountdownAndCheckAI() {
-    // 30 Septembre 2026 à 18h (mois indexé à 8) au 30 Octobre 2026 à 18h (mois indexé à 9)
     const startDate = new Date(2026, 8, 30, 18, 0, 0).getTime();
     const endDate = new Date(2026, 9, 30, 18, 0, 0).getTime();
     
@@ -19,12 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const isContestActive = now >= startDate && now <= endDate;
 
-    // BLOQUER/DÉBLOQUER LE BOUTON IA
     if (geminiAiBtn) {
       if (isContestActive) {
         geminiAiBtn.disabled = true;
         geminiAiBtn.classList.add("disabled");
-        geminiAiBtn.setAttribute("title", "L'option IA est interdite pendant toute la durée du concours !");
+        geminiAiBtn.setAttribute("title", t.aiDisabledTooltip);
       } else {
         geminiAiBtn.disabled = false;
         geminiAiBtn.classList.remove("disabled");
@@ -41,11 +116,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      display.textContent = `: ${days}j/${hours}h/${minutes}min/${seconds}s`;
+      display.textContent = `: ${days}j/${hours}h/${minutes}m/${seconds}s`;
     } else if (isContestActive) {
-      display.textContent = ": Concours en cours ! 🔥";
+      display.textContent = `: ${t.contestInProg}`;
     } else {
-      display.textContent = ": Concours terminé ! 🎉";
+      display.textContent = `: ${t.contestEnded}`;
     }
   }
 
@@ -53,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCountdownAndCheckAI();
 
   // ---------------------------------------------------
-  // 2. ÉLÉMENTS DU DOM & INITIALISATION
+  // 2. ÉLÉMENTS DOM & INITIALISATION
   // ---------------------------------------------------
   const homeScreen = document.getElementById("homeScreen");
   const startBtn = document.getElementById("startBtn");
@@ -66,13 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewCanvas = document.getElementById("previewCanvas");
   const previewCtx = previewCanvas ? previewCanvas.getContext("2d") : null;
 
-  // Galerie
   const openGalleryBtn = document.getElementById("openGalleryBtn");
   const galleryModal = document.getElementById("galleryModal");
   const closeGalleryBtn = document.getElementById("closeGalleryBtn");
   const galleryGrid = document.getElementById("galleryGrid");
 
-  // Outils
   const brushTool = document.getElementById("brushTool");
   const handTool = document.getElementById("handTool");
   const bucketTool = document.getElementById("bucketTool");
@@ -82,14 +155,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const clearCanvasBtn = document.getElementById("clearCanvas");
   const clearLayerBtn = document.getElementById("clearLayerBtn");
 
-  // Contrôles
   const undoBtn = document.getElementById("undoBtn");
   const redoBtn = document.getElementById("redoBtn");
   const resetZoomBtn = document.getElementById("resetZoomBtn");
   const saveDrawingBtn = document.getElementById("saveDrawingBtn");
   const downloadBtn = document.getElementById("downloadBtn");
 
-  // Sélecteur de couleur
   const colorPickerModal = document.getElementById("colorPickerModal");
   const openPickerFromTop = document.getElementById("openPickerFromTop");
   const closePickerBtn = document.getElementById("closePickerBtn");
@@ -108,9 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const pickerSizeInput = document.getElementById("pickerSizeInput");
   const sizeHandle = document.getElementById("sizeHandle");
 
-  // ---------------------------------------------------
-  // 3. ÉTAT DE L'APPLICATION
-  // ---------------------------------------------------
   let currentTool = "brush";
   let currentColor = "#000000";
   let brushSize = 5;
@@ -134,9 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let historyStep = -1;
   const MAX_HISTORY = 20;
 
-  // ---------------------------------------------------
-  // 4. TAILLE DU CANVAS ET CENTRAGE ANCRÉ
-  // ---------------------------------------------------
   function initCanvasSize() {
     canvas.width = 1080;
     canvas.height = 1920;
@@ -152,8 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (previewCanvas) {
-      previewCanvas.width = 60;
-      previewCanvas.height = 100;
+      previewCanvas.width = 50;
+      previewCanvas.height = 90;
     }
 
     saveHistory();
@@ -167,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cW <= 0) cW = window.innerWidth;
     if (cH <= 0) cH = window.innerHeight;
 
-    const padding = 30;
+    const padding = 20;
     const availW = cW - padding * 2;
     const availH = cH - padding * 2;
 
@@ -187,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let cW = canvasContainer ? canvasContainer.clientWidth : window.innerWidth;
     let cH = canvasContainer ? canvasContainer.clientHeight : window.innerHeight;
 
-    const minVisiblePixel = 120;
+    const minVisiblePixel = 100;
     const minPanX = -canvas.width * scale + minVisiblePixel;
     const maxPanX = cW - minVisiblePixel;
     const minPanY = -canvas.height * scale + minVisiblePixel;
@@ -201,9 +266,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (homeScreen) homeScreen.style.display = "flex";
 
-  // ---------------------------------------------------
-  // 5. NAVIGATION & ÉVÉNEMENTS D'ACCUEIL
-  // ---------------------------------------------------
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       if (homeScreen) homeScreen.style.display = "none";
@@ -237,9 +299,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------------------------------------------------
-  // 6. GESTION DES OUTILS
-  // ---------------------------------------------------
   const tools = [
     { btn: brushTool, name: "brush" },
     { btn: handTool, name: "hand" },
@@ -263,9 +322,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ---------------------------------------------------
-  // 7. SÉLECTEUR DE COULEUR ET ÉPAISSEUR
-  // ---------------------------------------------------
   if (openPickerFromTop) openPickerFromTop.addEventListener("click", openColorPicker);
   if (closePickerBtn) {
     closePickerBtn.addEventListener("click", () => {
@@ -406,9 +462,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updatePickerUI();
   }
 
-  // ---------------------------------------------------
-  // 8. INTERACTION DESSIN ET DÉPLACEMENT
-  // ---------------------------------------------------
   function getCanvasCoords(e) {
     const rect = canvasContainer.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -522,9 +575,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fill();
   }
 
-  // ---------------------------------------------------
-  // 9. OUTILS SPÉCIAUX (Remplissage, Pipette, Texte)
-  // ---------------------------------------------------
   function floodFill(startX, startY, fillHex) {
     if (startX < 0 || startX >= canvas.width || startY < 0 || startY >= canvas.height) return;
 
@@ -632,7 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addTextPrompt(x, y) {
-    const text = prompt("Entrez votre texte :");
+    const text = prompt(t.textPrompt);
     if (text) {
       ctx.fillStyle = currentColor;
       ctx.font = `${brushSize * 4 + 12}px sans-serif`;
@@ -642,9 +692,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ---------------------------------------------------
-  // 10. IA & CONTOUR D'IMAGE
-  // ---------------------------------------------------
   if (geminiAiBtn) {
     geminiAiBtn.addEventListener("click", () => {
       if (geminiAiBtn.disabled) return;
@@ -727,9 +774,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updatePreview();
   }
 
-  // ---------------------------------------------------
-  // 11. HISTORIQUE & EFFACEMENT
-  // ---------------------------------------------------
   function saveHistory() {
     if (historyStep < history.length - 1) {
       history.splice(historyStep + 1);
@@ -768,7 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (clearLayerBtn) clearLayerBtn.addEventListener("click", clearCanvas);
 
   function clearCanvas() {
-    if (confirm("Voulez-vous vraiment effacer tout le dessin ?")) {
+    if (confirm(t.confirmClear)) {
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       saveHistory();
@@ -788,9 +832,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // ---------------------------------------------------
-  // 12. SAUVEGARDE LOCALE & GALERIE
-  // ---------------------------------------------------
   if (saveDrawingBtn) {
     saveDrawingBtn.addEventListener("click", () => {
       const dataUrl = canvas.toDataURL("image/png");
@@ -798,7 +839,7 @@ document.addEventListener("DOMContentLoaded", () => {
       drawings.unshift({ id: Date.now(), image: dataUrl });
 
       localStorage.setItem("drawpad_saved", JSON.stringify(drawings));
-      alert("Dessin enregistré dans 'Mes dessins enregistrés' !");
+      alert(t.saveSuccess);
     });
   }
 
@@ -818,7 +859,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (drawings.length === 0) {
       galleryGrid.innerHTML =
-        '<p style="color:#aaa; grid-column:1/-1; text-align:center;">Aucun dessin enregistré pour le moment.</p>';
+        `<p style="color:#aaa; grid-column:1/-1; text-align:center;">${t.noDrawings}</p>`;
       return;
     }
 
@@ -831,7 +872,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const delBtn = document.createElement("button");
       delBtn.className = "delete-drawing-btn";
-      delBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Supprimer';
+      delBtn.innerHTML = `<i class="fa-solid fa-trash"></i> ${t.deleteBtn}`;
       delBtn.onclick = () => {
         deleteDrawing(item.id);
       };
@@ -849,9 +890,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGallery();
   }
 
-  // ---------------------------------------------------
-  // 13. CONVERSIONS DE COULEURS
-  // ---------------------------------------------------
   function hsvToHex(h, s, v) {
     let r, g, b;
     let i = Math.floor((h / 60) % 6);
